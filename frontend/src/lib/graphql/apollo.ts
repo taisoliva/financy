@@ -9,7 +9,7 @@ import { onError } from "@apollo/client/link/error";
 import { useAuthStore } from "@/stores/auth";
 
 const httpLink = new HttpLink({
-  uri: "http://localhost:3000/graphql",
+  uri: import.meta.env.VITE_API_URL ?? "http://localhost:3000/graphql",
 });
 
 const isTokenExpired = (token: string) => {
