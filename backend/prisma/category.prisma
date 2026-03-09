@@ -1,0 +1,17 @@
+model Category {
+    id String @id @default(cuid())
+    title String
+    description String
+    color String
+    icon String
+
+    transactions Transaction[]
+
+    userId String
+    user User @relation(fields: [userId], references: [id])
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@map("categories")
+}

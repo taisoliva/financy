@@ -1,0 +1,176 @@
+"""Exposes a URL that specifies the behavior of this scalar."""
+directive @specifiedBy(
+  """The URL that specifies the behavior of this scalar."""
+  url: String!
+) on SCALAR
+
+"""
+Indicates exactly one field must be supplied and this field must not be `null`.
+"""
+directive @oneOf on INPUT_OBJECT
+
+type Auth {
+  access_token: String!
+}
+
+type CategoriesResponse {
+  data: [Category!]!
+  metadata: PaginationMetadata!
+}
+
+type Category {
+  """Category ID"""
+  id: String!
+
+  """Category title"""
+  title: String!
+
+  """Category description"""
+  description: String!
+
+  """Category color"""
+  color: String!
+
+  """Category icon"""
+  icon: String!
+}
+
+input CreateAuthInput {
+  email: String!
+  password: String!
+}
+
+input CreateCategoryInput {
+  """Category title"""
+  title: String!
+
+  """Category description"""
+  description: String!
+
+  """Category color"""
+  color: String!
+
+  """Category icon"""
+  icon: String!
+}
+
+input CreateTransactionInput {
+  description: String!
+  date: DateTime!
+  amount: Float!
+  type: String!
+  categoryId: String!
+  userId: String!
+}
+
+input CreateUserInput {
+  """Full name of the user"""
+  fullName: String!
+
+  """Email of the user"""
+  email: String!
+
+  """Password of the user"""
+  password: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): User!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  removeUser(id: String!): User!
+  createCategory(createCategoryInput: CreateCategoryInput!): Category!
+  updateCategory(updateCategoryInput: UpdateCategoryInput!): Category!
+  removeCategory(id: String!): Category!
+  createTransaction(createTransactionInput: CreateTransactionInput!): Transaction!
+  updateTransaction(updateTransactionInput: UpdateTransactionInput!): Transaction!
+  removeTransaction(id: Int!): Transaction!
+  login(createAuthInput: CreateAuthInput!): Auth!
+}
+
+type PaginationMetadata {
+  page: Int!
+  limit: Int!
+  items: Int!
+  hasPrev: Boolean!
+  totalPages: Int!
+  hasNext: Boolean!
+}
+
+type Query {
+  users(skip: Int = 1, take: Int = 10): UsersResponse!
+  user(id: String!): User!
+  categories(skip: Int = 1, take: Int = 10): CategoriesResponse!
+  category(id: String!): Category!
+  transactions: [Transaction!]!
+  transaction(id: Int!): Transaction!
+}
+
+type Transaction {
+  id: String!
+  description: String!
+  date: DateTime!
+  amount: Float!
+  type: String!
+  categoryId: Int!
+  userId: Int!
+}
+
+input UpdateCategoryInput {
+  """Category title"""
+  title: String
+
+  """Category description"""
+  description: String
+
+  """Category color"""
+  color: String
+
+  """Category icon"""
+  icon: String
+  id: String!
+}
+
+input UpdateTransactionInput {
+  description: String
+  date: DateTime
+  amount: Float
+  type: String
+  categoryId: String
+  userId: String
+  id: String!
+}
+
+input UpdateUserInput {
+  """Full name of the user"""
+  fullName: String
+
+  """Email of the user"""
+  email: String
+
+  """Password of the user"""
+  password: String
+  id: String!
+}
+
+"""User entity"""
+type User {
+  """User ID"""
+  id: String!
+
+  """User full name"""
+  fullName: String!
+
+  """User email"""
+  email: String!
+}
+
+type UsersResponse {
+  data: [User!]!
+  metadata: PaginationMetadata!
+}
+
